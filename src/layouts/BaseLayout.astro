@@ -1,22 +1,14 @@
 ---
-export interface Props extends headProps {
-    className?: string;
-}
-
-import Head, { Props as headProps } from "../components/Head.astro";
-import { site } from "../data/site";
-
-const { className = "container", ...head } = Astro.props;
+import "../styles/base/_index.scss";
 ---
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <Head {...head} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </head>
     <body class="crt">
-        <main class={className} id="main">
+        <main class="container" id="main">
             <slot name="main"><slot /></slot>
         </main>
         <style lang="scss">
