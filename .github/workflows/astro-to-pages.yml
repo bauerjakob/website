@@ -26,8 +26,7 @@ jobs:
             # path: . # The root location of your Astro project inside the repository. (optional)
             node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 16. (optional)
             # package-manager: pnpm # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
-            auto-install-peers: true
-      - run: pnpm config set auto-install-peers true
+            # auto-install-peers: false
 
   deploy:
     needs: build
