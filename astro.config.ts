@@ -7,34 +7,36 @@ import prefetch from "@astrojs/prefetch";
 import image from "@astrojs/image";
 
 // https://astro.build/config
+import node from "@astrojs/node";
+
+// https://astro.build/config
 export default defineConfig({
     site: "http://localhost:3000",
     markdown: {
         shikiConfig: {
             theme: "dracula",
-            wrap: true,
-        },
+            wrap: true
+        }
     },
-    integrations: [
-        sitemap(),
-        image({
-            serviceEntryPoint: "@astrojs/image/sharp",
-        }),
-        compress({
-            css: false,
-            html: {
-                removeComments: true,
-                removeAttributeQuotes: false,
-            },
-            img: false,
-            js: false,
-            svg: true,
-        }),
-        prefetch(),
-    ],
+    integrations: [sitemap(), image({
+        serviceEntryPoint: "@astrojs/image/sharp"
+    }), compress({
+        css: false,
+        html: {
+            removeComments: true,
+            removeAttributeQuotes: false
+        },
+        img: false,
+        js: false,
+        svg: true
+    }), prefetch()],
     vite: {
         build: {
-            assetsInlineLimit: 0,
-        },
+            assetsInlineLimit: 0
+        }
     },
+    output: "server",
+    adapter: node({
+        mode: 'standalone',
+    }),
 });
