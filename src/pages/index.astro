@@ -1,0 +1,43 @@
+---
+import AuthorCard from "../components/AuthorCard.astro";
+import Footer from "../components/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title={"Home"} description={"Home Page"}>
+    <Fragment slot="main">
+        <section id="first">
+            <div></div>
+            <div>
+                <h1>Hello world</h1>
+                <article><p>This is my personal website.</p></article>
+                <div id="authorCard">
+                    <AuthorCard />
+                </div>
+            </div>
+            <Footer />
+        </section>
+    </Fragment>
+</BaseLayout>
+
+<style>
+    section {
+        padding: 1rem 1rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        scroll-snap-align: start;
+    }
+
+    #first {
+        justify-content: space-between;
+    }
+
+    #second {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    #authorCard {
+        margin-top: 2rem;
+    }
+</style>
