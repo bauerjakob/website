@@ -7,11 +7,12 @@ import prefetch from "@astrojs/prefetch";
 import image from "@astrojs/image";
 
 // https://astro.build/config
-import node from "@astrojs/node";
+// import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-    site: "http://localhost:3000",
+    site: "https://bauerjakob.github.io",
+    base: "/website",
     markdown: {
         shikiConfig: {
             theme: "dracula",
@@ -35,8 +36,8 @@ export default defineConfig({
             assetsInlineLimit: 0
         }
     },
-    output: "server",
-    adapter: node({
-        mode: 'standalone',
-    }),
+    // output: "server",
+    // adapter: node({
+    //     mode: 'standalone',
+    // }),
 });
