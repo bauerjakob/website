@@ -1,4 +1,4 @@
-# My personal website 👨‍🚀
+# My personal website
 
 <img src="./images/screenshot.jpeg">
 
