@@ -15,7 +15,7 @@ export interface Site {
 
 export const site: Site = {
     author: {
-        bio: "Hello there! I can develop software. I also enjoy learning new technologies. Thats what I like.",
+        bio: "Hello there! I can develop software and I also enjoy learning new technologies. That's what I like.",
         firstname: "Jakob",
         lastname: "Bauer",
         socials: [
