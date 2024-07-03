@@ -3,8 +3,8 @@ import { site } from "../data/site";
 const a = site.author;
 ---
 
-<section class="program-screen">
-    <div class="program-header">
+<div id="program-screen" class="program-screen draggable">
+    <div id="program-header" class="program-header">
         <div class="mac-buttons">
             <span class="close"></span>
             <span class="minimize"></span>
@@ -44,24 +44,45 @@ const a = site.author;
 
         <p class="program-screen-content">{a.bio}</p>
     </div>
-</section>
+</div>
 
 <style lang="scss">
+    @media screen and (min-width: 30rem) {
+        .draggable {
+            position: absolute;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            user-select: none;
+            cursor: move;
+
+            left: calc(50% - 15rem);
+        }
+
+        .program-screen {
+            margin: 0 !important;
+        }
+    }
+
     .program-screen {
         max-width: 30rem;
         min-width: 15rem;
         overflow: hidden;
         border-radius: 0.5em;
         text-align: start;
-        margin: 0 auto;
         font-weight: 700;
+        background-color: hsl(var(--base-darker));
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        border: 1px solid #4b4b4b33;
+
+        margin: 0 auto;
 
         .program-header {
             display: flex;
             align-items: center;
             padding: 7px 10px;
             background-color: hsl(221.7, 16.3%, 27.6%, 0.3);
-            cursor: move;
             user-select: none;
             border-bottom: 1px solid #2c2c2c;
 
@@ -100,8 +121,6 @@ const a = site.author;
             .tilted {
                 color: hsl(var(--accent));
             }
-
-            background-color: hsl(var(--base-darker));
         }
 
         .program-screen-content {
@@ -110,3 +129,81 @@ const a = site.author;
         }
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const draggableElement = document.getElementById("program-screen");
+        const headerElement = document.getElementById("program-header");
+
+        if (draggableElement === null || headerElement === null) {
+            console.error("Could not find draggable element or header element");
+            return;
+        }
+
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        headerElement.addEventListener("mousedown", (e) => {
+            // Only start dragging if the left mouse button is pressed
+            if (e.button !== 0) return;
+
+            isDragging = true;
+            const rect = draggableElement.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        });
+
+        function onMouseMove(e: any) {
+            if (draggableElement === null || headerElement === null) {
+                console.error(
+                    "Could not find draggable element or header element"
+                );
+                return;
+            }
+
+            if (isDragging) {
+                const newLeft = e.clientX - offsetX;
+                const newTop = e.clientY - offsetY;
+
+                // Get the viewport dimensions
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                // Get the dimensions of the draggable element
+                const elementWidth = draggableElement.offsetWidth;
+                const elementHeight = draggableElement.offsetHeight;
+
+                // Ensure the element stays within the viewport boundaries
+                if (newLeft < 0) {
+                    draggableElement.style.left = "0px";
+                } else if (newLeft + elementWidth > viewportWidth) {
+                    draggableElement.style.left = `${
+                        viewportWidth - elementWidth
+                    }px`;
+                } else {
+                    draggableElement.style.left = `${newLeft}px`;
+                }
+
+                if (newTop < 0) {
+                    draggableElement.style.top = "0px";
+                } else if (newTop + elementHeight > viewportHeight) {
+                    draggableElement.style.top = `${
+                        viewportHeight - elementHeight
+                    }px`;
+                } else {
+                    draggableElement.style.top = `${newTop}px`;
+                }
+            }
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+        }
+    });
+</script>

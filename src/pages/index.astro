@@ -16,6 +16,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     <ProgramScreen />
                 </div>
             </div>
+            <div class="hideOnMobile"></div>
             <Footer />
         </section>
     </Fragment>
@@ -29,6 +30,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         display: flex;
         flex-direction: column;
         scroll-snap-align: start;
+        user-select: none;
     }
 
     #first {
