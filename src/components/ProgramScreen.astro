@@ -56,6 +56,7 @@ const a = site.author;
             overflow: hidden;
             user-select: none;
             cursor: move;
+            min-width: 30rem !important;
 
             left: calc(50% - 15rem);
         }
@@ -124,7 +125,6 @@ const a = site.author;
         }
 
         .program-screen-content {
-            margin: 0 1rem;
             margin-top: 0.5rem;
         }
     }
@@ -144,7 +144,49 @@ const a = site.author;
         let offsetX = 0;
         let offsetY = 0;
 
+        // Function to get the root font size
+        function getRootFontSize() {
+            return parseFloat(
+                getComputedStyle(document.documentElement).fontSize
+            );
+        }
+
+        // Function to check window size in rem units
+        function checkWindowSize(): boolean {
+            if (draggableElement === null || headerElement === null) {
+                console.error(
+                    "Could not find draggable element or header element"
+                );
+
+                return false;
+            }
+
+            const minRem = 30; // Minimum width in rem
+            const rootFontSize = getRootFontSize();
+            const minWidthInPixels = minRem * rootFontSize;
+
+            if (window.innerWidth >= minWidthInPixels) {
+                return true;
+            }
+
+            return false;
+        }
+
+        window.addEventListener("resize", (e) => {
+            if (!checkWindowSize()) {
+                isDragging = false;
+                draggableElement.style.left = "calc(50% - 15rem)";
+                draggableElement.style.top = "initial";
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+            }
+        });
+
         headerElement.addEventListener("mousedown", (e) => {
+            if (!checkWindowSize()) {
+                return;
+            }
+
             // Only start dragging if the left mouse button is pressed
             if (e.button !== 0) return;
 
