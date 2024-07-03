@@ -1,0 +1,112 @@
+---
+import { site } from "../data/site";
+const a = site.author;
+---
+
+<section class="program-screen">
+    <div class="program-header">
+        <div class="mac-buttons">
+            <span class="close"></span>
+            <span class="minimize"></span>
+            <span class="maximize"></span>
+        </div>
+    </div>
+    <div class="program-body">
+        <h3 style={`--length: ${a.firstname.length}ch;`}>
+            {a.firstname}
+            {a.lastname}
+        </h3>
+        <ul aria-hidden="true">
+            <li style="color: hsl(var(--accent));">
+                {"".padEnd(a.lastname.length + a.firstname.length + 3, "-")}
+            </li>
+            <li>
+                <strong>E-Mail:</strong> mail@bauer-jakob.de
+            </li>
+        </ul>
+        <ul>
+            {
+                a.socials.map((s) => (
+                    <li>
+                        <strong>{s.name}: </strong>
+                        <a
+                            href={s.link}
+                            rel="nofollow noreferrer"
+                            target="_blank"
+                        >
+                            {s.link}
+                        </a>
+                    </li>
+                ))
+            }
+            <li aria-hidden="true" class="tilted">~</li>
+        </ul>
+
+        <p class="program-screen-content">{a.bio}</p>
+    </div>
+</section>
+
+<style lang="scss">
+    .program-screen {
+        max-width: 30rem;
+        min-width: 15rem;
+        overflow: hidden;
+        border-radius: 0.5em;
+        text-align: start;
+        margin: 0 auto;
+        font-weight: 700;
+
+        .program-header {
+            display: flex;
+            align-items: center;
+            padding: 7px 10px;
+            background-color: hsl(221.7, 16.3%, 27.6%, 0.3);
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid #2c2c2c;
+
+            .mac-buttons {
+                display: flex;
+                gap: 8px;
+                margin-right: auto;
+
+                span {
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    background-color: #ff5f57; /* Close button */
+                }
+
+                .minimize {
+                    background-color: #ffbd2e; /* Minimize button */
+                }
+
+                .maximize {
+                    background-color: #28c940; /* Maximize button */
+                }
+            }
+        }
+
+        .program-body {
+            padding: 1em 2rem;
+            h3,
+            strong {
+                color: hsl(var(--accent-2));
+            }
+            strong {
+                font-family: "HackBold";
+            }
+            .tilted {
+                color: hsl(var(--accent));
+            }
+
+            background-color: hsl(var(--base-darker));
+        }
+
+        .program-screen-content {
+            margin: 0 1rem;
+            margin-top: 0.5rem;
+        }
+    }
+</style>
