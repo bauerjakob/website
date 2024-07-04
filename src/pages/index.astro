@@ -23,10 +23,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <style>
     section {
         padding: 1rem 1rem;
-        padding-top: 25vh;
-        min-height: 100vh;
-        height: 100vh;
-        min-height: -webkit-fill-available; /* mobile viewport bug fix */
+        padding-top: calc(var(--vh, 1vh) * 25);
+        min-height: calc(var(--vh, 1vh) * 100);
         width: 100vw;
         display: flex;
         flex-direction: column;
@@ -45,3 +43,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         margin-top: 2rem;
     }
 </style>
+
+<script>
+    function setVhProperty() {
+        document.documentElement.style.setProperty(
+            "--vh",
+            `${window.innerHeight * 0.01}px`
+        );
+    }
+
+    // Set the --vh custom property on page load with a slight delay
+    window.addEventListener("load", () => {
+        setTimeout(setVhProperty, 2000);
+    });
+
+    // Set the --vh custom property on resize with debounce
+    let resizeTimeout: any;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(setVhProperty, 100);
+    });
+</script>
