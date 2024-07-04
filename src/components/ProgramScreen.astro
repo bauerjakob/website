@@ -207,6 +207,10 @@ const a = site.author;
 
         // close button
         closeButtonElement.addEventListener("click", () => {
+            if (!checkWindowSize()) {
+                return;
+            }
+
             draggableElement.classList.add("close-window");
 
             var hidden: any = document.getElementsByClassName("program-closed");
@@ -216,7 +220,7 @@ const a = site.author;
         });
 
         minimizeButtonElement.addEventListener("click", () => {
-            if (fullscreenMode) {
+            if (!checkWindowSize() || fullscreenMode) {
                 return;
             }
 
@@ -231,6 +235,10 @@ const a = site.author;
         let fullscreenMode = false;
 
         maximizeButtonElement.addEventListener("click", () => {
+            if (!checkWindowSize()) {
+                return;
+            }
+
             draggableElement.classList.toggle("maximize-window");
             fullscreenMode = !fullscreenMode;
         });
@@ -274,6 +282,12 @@ const a = site.author;
                 isDragging = false;
                 draggableElement.style.left = "calc(50% - 15rem)";
                 draggableElement.style.top = "initial";
+
+                if (fullscreenMode) {
+                    draggableElement.classList.remove("maximize-window");
+                    fullscreenMode = false;
+                }
+
                 document.removeEventListener("mousemove", onMouseMove);
                 document.removeEventListener("mouseup", onMouseUp);
             }
