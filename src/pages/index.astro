@@ -8,7 +8,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <BaseLayout>
     <Fragment slot="main">
         <section id="first">
-            <div></div>
             <div>
                 <h1>Hello world</h1>
                 <article><p>This is my personal website.</p></article>
@@ -25,12 +24,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <style>
     section {
         padding: 1rem 1rem;
+        padding-top: 25vh;
         min-height: 100vh;
         min-height: -webkit-fill-available; /* mobile viewport bug fix */
+        width: 100vw;
         display: flex;
         flex-direction: column;
         scroll-snap-align: start;
-        user-select: none;
     }
 
     #first {
