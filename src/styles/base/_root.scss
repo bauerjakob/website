@@ -15,20 +15,84 @@
     --spacing: 3rem;
 }
 
-@include font_face("HackBold", $weight: 700);
-@include font_face("HackBold", $weight: 700, $format: "woff");
-@include font_face("HackRegular");
-@include font_face("HackRegular", $format: "woff");
-
-html {
-    scroll-snap-type: y proximity;
-}
+@include font_face("Hack", $format: "woff", $file: "HackRegular");
+@include font_face("Hack", $weight: 700, $format: "woff", $file: "HackBold");
 
 body {
-    font-size: var(--fs-0);
+    font-size: 0.875rem;
+    line-height: 1.6;
     background-color: hsl(var(--base));
     color: hsl(var(--txtc));
-    font-family: "HackRegular", sans-serif;
+    font-family: "Hack", ui-monospace, Menlo, Consolas, monospace;
+    -webkit-font-smoothing: antialiased;
+
+    // the terminal scrolls itself, and its resize handles may poke past the edge
+    @include windowed {
+        overflow: hidden;
+    }
+
+    // wallpaper behind the terminal window
+    &::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(
+                60vmax 45vmax at 12% 90%,
+                hsla(var(--accent), 0.16),
+                transparent 70%
+            ),
+            radial-gradient(
+                55vmax 40vmax at 90% 6%,
+                hsla(var(--accent-2), 0.14),
+                transparent 70%
+            ),
+            radial-gradient(hsla(220, 40%, 88%, 0.07) 1px, transparent 1.5px) 0
+                0 / 24px 24px;
+    }
+
+    // the old CRT look, available through the `crt` terminal command
+    &.crt::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        pointer-events: none;
+        background: linear-gradient(transparent 15%, black, transparent 85%),
+            linear-gradient(
+                90deg,
+                black 1%,
+                red,
+                black,
+                green,
+                black,
+                blue,
+                black 99%
+            );
+        background-size: 100% 3px, 12px 100%;
+        opacity: 0.1;
+    }
+
+    // set while the terminal window is being moved or resized
+    &.is-dragging {
+        user-select: none;
+        -webkit-user-select: none;
+
+        &,
+        * {
+            cursor: var(--drag-cursor, grabbing) !important;
+        }
+    }
+}
+
+:focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+}
+
+::selection {
+    background: hsla(var(--accent), 0.3);
 }
 
 .hidden-menu {
@@ -142,9 +206,16 @@ body {
 
 .container {
     width: 100%;
-    // padding-right: calc(var(--spacing) * 0.5);
-    // padding-left: calc(var(--spacing) * 0.5);
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    justify-items: center;
+    align-items: center;
+
+    // a fixed height stops a tall resized window from growing the page
+    @include windowed {
+        height: 100vh;
+        height: 100dvh;
+    }
 }

@@ -1,0 +1,8 @@
+// Screens big enough to show the terminal as a floating, draggable window.
+// Smaller screens get a full-bleed layout that scrolls with the page.
+// Keep in sync with WINDOWED in ProgramScreen.astro.
+@mixin windowed {
+    @media (min-width: 48rem) and (min-height: 32rem) {
+        @content;
+    }
+}

@@ -1,0 +1,127 @@
+---
+import { site } from "../data/site";
+
+const { author: a } = site;
+
+const jakob = [
+    "     ██╗ █████╗ ██╗  ██╗ ██████╗ ██████╗ ",
+    "     ██║██╔══██╗██║ ██╔╝██╔═══██╗██╔══██╗",
+    "     ██║███████║█████╔╝ ██║   ██║██████╔╝",
+    "██   ██║██╔══██║██╔═██╗ ██║   ██║██╔══██╗",
+    "╚█████╔╝██║  ██║██║  ██╗╚██████╔╝██████╔╝",
+    " ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ",
+].join("\n");
+
+const bauer = [
+    "██████╗  █████╗ ██╗   ██╗███████╗██████╗ ",
+    "██╔══██╗██╔══██╗██║   ██║██╔════╝██╔══██╗",
+    "██████╔╝███████║██║   ██║█████╗  ██████╔╝",
+    "██╔══██╗██╔══██║██║   ██║██╔══╝  ██╔══██╗",
+    "██████╔╝██║  ██║╚██████╔╝███████╗██║  ██║",
+    "╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝",
+].join("\n");
+---
+
+<div class="banner" aria-hidden="true">
+    <pre>{jakob}</pre>
+    <pre>{bauer}</pre>
+</div>
+
+<p class="headline">{a.headline}</p>
+
+<dl class="rows">
+    {
+        a.facts.map((f) => (
+            <>
+                <dt>{f.key}</dt>
+                <dd>{f.value}</dd>
+            </>
+        ))
+    }
+</dl>
+
+<dl class="rows links">
+    {
+        a.socials.map((s) => (
+            <>
+                <dt>{s.name}</dt>
+                <dd>
+                    <a href={s.link} rel="noreferrer" target="_blank">
+                        {s.label}
+                    </a>
+                </dd>
+            </>
+        ))
+    }
+</dl>
+
+<style lang="scss">
+    .banner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6em 3ch;
+        width: fit-content;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        font-size: clamp(9px, 3.35vw, 15px);
+        background: linear-gradient(
+            100deg,
+            hsl(var(--accent)),
+            hsl(var(--accent-2))
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+
+        pre {
+            margin: 0;
+            font: inherit;
+            line-height: 1.17;
+            color: transparent;
+            user-select: none;
+        }
+    }
+
+    .headline {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .rows {
+        display: grid;
+        grid-template-columns: 8ch minmax(0, 1fr);
+        gap: 0.15rem 2ch;
+    }
+
+    dt {
+        color: hsl(var(--accent-2));
+        font-weight: 700;
+    }
+
+    dd {
+        margin: 0;
+    }
+
+    .links {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 1px dashed var(--hairline);
+
+        a {
+            overflow-wrap: anywhere;
+            text-decoration: underline;
+            text-decoration-color: hsla(var(--accent), 0.45);
+            text-underline-offset: 3px;
+            transition: color 0.15s;
+
+            &:hover {
+                color: hsl(var(--accent));
+            }
+
+            &::after {
+                content: " ↗";
+                color: hsl(var(--dim));
+            }
+        }
+    }
+</style>

@@ -3,13 +3,19 @@ const year = new Date().getFullYear();
 ---
 
 <footer>
-    <p>
-        <span>&#xa9; {year} Jakob Bauer &#xa9;</span>
-    </p>
+    <p>&#xa9; <span id="footer-year">{year}</span> Jakob Bauer &#xa9;</p>
 </footer>
 
+<script>
+    // The site is static, so the year from the build would go stale.
+    const footerYear = document.getElementById("footer-year");
+    if (footerYear) footerYear.textContent = String(new Date().getFullYear());
+</script>
+
 <style lang="scss">
-    p {
-        padding-top: 1rem;
+    footer {
+        padding: 0.75rem 1rem;
+        font-size: 0.75rem;
+        color: hsl(var(--dim));
     }
 </style>

@@ -1,43 +1,130 @@
 ---
+import Fastfetch from "../components/Fastfetch.astro";
 import Footer from "../components/Footer.astro";
+import GitLog from "../components/GitLog.astro";
 import ProgramScreen from "../components/ProgramScreen.astro";
+import SkillTree from "../components/SkillTree.astro";
+import TerminalBlock from "../components/TerminalBlock.astro";
+import { site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const { author: a } = site;
+
+const tabs = [
+    { id: "home", label: "home" },
+    { id: "about", label: "about" },
+    { id: "work", label: "work" },
+    { id: "skills", label: "skills" },
+    { id: "awards", label: "awards" },
+];
 ---
 
 <BaseLayout>
     <Fragment slot="main">
-        <section>
-            <div>
-                <h1>Hello world</h1>
-                <article><p>This is my personal website.</p></article>
-                <div id="authorCard">
-                    <ProgramScreen />
-                </div>
-            </div>
-            <div class="hideOnMobile"></div>
-            <Footer />
-        </section>
+        <ProgramScreen tabs={tabs}>
+            <h1 class="sr-only">{a.firstname} {a.lastname}</h1>
+            <p class="motd">
+                <strong>Hello world.</strong> This is my personal website.
+                <span class="hint">
+                    Scroll around, or type <kbd>help</kbd> below.
+                </span>
+            </p>
+
+            <TerminalBlock
+                id="home"
+                title="Overview"
+                command="fastfetch"
+                index={0}
+                typed
+            >
+                <Fastfetch />
+            </TerminalBlock>
+
+            <TerminalBlock
+                id="about"
+                title="About"
+                command="cat about.md"
+                index={1}
+            >
+                <p class="prose">{a.bio}</p>
+            </TerminalBlock>
+
+            <TerminalBlock
+                id="work"
+                title="Experience"
+                command="git log --graph career"
+                index={2}
+            >
+                <GitLog />
+            </TerminalBlock>
+
+            <TerminalBlock
+                id="skills"
+                title="Skills"
+                command="tree skills"
+                index={3}
+            >
+                <SkillTree />
+            </TerminalBlock>
+
+            <TerminalBlock
+                id="awards"
+                title="Honors and awards"
+                command="cat awards.log"
+                index={4}
+            >
+                <ul class="awards">
+                    {a.awards.map((award) => <li>{award}</li>)}
+                </ul>
+            </TerminalBlock>
+        </ProgramScreen>
+        <Footer />
     </Fragment>
 </BaseLayout>
 
-<style>
-    section {
-        padding: 1rem 1rem;
-        padding-top: 25vh;
-        height: 100svh;
-        min-height: 35rem;
-        display: flex;
-        flex-direction: column;
-        scroll-snap-align: start;
-        justify-content: space-between;
-        box-sizing: border-box;
+<style lang="scss">
+    @use "../styles/mixins/windowed" as *;
+
+    .motd {
+        padding: 1rem 1rem 0.9rem;
+        color: hsl(var(--dim));
+
+        strong {
+            color: hsl(var(--txtc));
+        }
+
+        @include windowed {
+            padding: 1rem 2rem 0.9rem;
+        }
     }
 
-    #second {
-        background-color: rgba(0, 0, 0, 0.1);
+    .hint {
+        display: none;
+
+        @include windowed {
+            display: inline;
+        }
     }
 
-    #authorCard {
-        margin-top: 2rem;
+    kbd {
+        font: inherit;
+        color: hsl(var(--accent));
+    }
+
+    .prose {
+        max-width: 72ch;
+        line-height: 1.7;
+    }
+
+    .awards li {
+        position: relative;
+        padding-left: 2.5ch;
+
+        &::before {
+            content: "★";
+            position: absolute;
+            left: 0;
+            color: hsl(var(--yellow));
+        }
     }
 </style>

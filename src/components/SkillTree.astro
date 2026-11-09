@@ -1,0 +1,42 @@
+---
+import { site } from "../data/site";
+
+const { skills } = site.author;
+---
+
+<div class="trees">
+    {
+        skills.map((group) => (
+            <div>
+                <h3>{group.name}/</h3>
+                <ul>
+                    {group.items.map((item, i) => (
+                        <li>
+                            <span class="branch" aria-hidden="true">
+                                {i === group.items.length - 1 ? "└──" : "├──"}
+                            </span>
+                            {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        ))
+    }
+</div>
+
+<style lang="scss">
+    .trees {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 8ch;
+    }
+
+    h3 {
+        font-size: inherit;
+        color: hsl(var(--accent-2));
+    }
+
+    .branch {
+        color: hsl(var(--dim));
+    }
+</style>

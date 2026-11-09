@@ -1,0 +1,99 @@
+---
+interface Props {
+    id: string;
+    title: string;
+    command: string;
+    index: number;
+    typed?: boolean;
+}
+
+const { id, title, command, index, typed = false } = Astro.props;
+---
+
+<section
+    id={id}
+    class:list={["block", { "is-typed": typed }]}
+    data-command={command}
+    style={`--i: ${index}; --chars: ${command.length};`}
+>
+    <h2 class="cmd">
+        <span class="sr-only">{title}</span>
+        <span aria-hidden="true">
+            <span class="ps1">~ ❯</span>
+            <span class="text">{command}</span>
+        </span>
+    </h2>
+    <div class="out"><slot /></div>
+</section>
+
+<style lang="scss">
+    @use "../styles/mixins/windowed" as *;
+
+    .block {
+        padding: 1.1rem 1rem 1.3rem;
+        border-top: 1px solid var(--hairline);
+        scroll-margin-top: 2.5rem;
+        transition: background-color 0.25s;
+        animation: rise 0.5s ease-out both;
+        animation-delay: calc(var(--i) * 70ms + 900ms);
+
+        @include windowed {
+            padding: 1.15rem 2rem 1.5rem;
+            scroll-margin-top: 0;
+
+            &:hover {
+                background-color: hsla(0, 0%, 100%, 0.012);
+            }
+        }
+
+        &.flash {
+            animation: flash 1.1s ease-out;
+        }
+    }
+
+    .cmd {
+        margin-bottom: 0.75rem;
+        font-size: inherit;
+        font-weight: 700;
+    }
+
+    .ps1 {
+        color: hsl(var(--accent));
+    }
+
+    .is-typed {
+        animation: none;
+
+        .text {
+            display: inline-block;
+            width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            vertical-align: bottom;
+            animation: type 0.5s steps(var(--chars)) 0.3s forwards;
+        }
+
+        .out {
+            animation: rise 0.45s ease-out 0.85s both;
+        }
+    }
+
+    @keyframes rise {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+    }
+
+    @keyframes type {
+        to {
+            width: calc(var(--chars) * 1ch);
+        }
+    }
+
+    @keyframes flash {
+        from {
+            background-color: hsla(var(--accent), 0.12);
+        }
+    }
+</style>

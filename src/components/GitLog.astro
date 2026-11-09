@@ -1,0 +1,114 @@
+---
+import { site } from "../data/site";
+
+const { experience } = site.author;
+---
+
+<ol class="log">
+    {
+        experience.map((job) => (
+            <li class="commit">
+                <p class="meta">
+                    <span>{job.period}</span>
+                    {job.gitRef && <span class="ref">({job.gitRef})</span>}
+                </p>
+                <h3>
+                    {job.role} <span class="at">@ {job.company}</span>
+                </h3>
+                {job.note && <p class="note">{job.note}</p>}
+                {job.changes.length > 0 && (
+                    <ul class="diff">
+                        {job.changes.map((change) => (
+                            <li>{change}</li>
+                        ))}
+                    </ul>
+                )}
+            </li>
+        ))
+    }
+</ol>
+
+<style lang="scss">
+    .commit {
+        position: relative;
+        padding: 0 0 1.5rem 2.5ch;
+
+        &:last-child {
+            padding-bottom: 0;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        // graph line
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0.34em;
+            top: 0.7em;
+            bottom: -0.7em;
+            width: 1px;
+            background: hsla(var(--accent), 0.35);
+        }
+
+        // commit dot
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.42em;
+            width: 0.72em;
+            height: 0.72em;
+            border-radius: 50%;
+            background: hsl(var(--base-darker));
+            border: 2px solid hsl(var(--accent));
+        }
+
+        &:first-child::after {
+            background: hsl(var(--accent));
+            box-shadow: 0 0 0 4px hsla(var(--accent), 0.18);
+        }
+    }
+
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 1.5ch;
+        color: hsl(var(--yellow));
+    }
+
+    .ref {
+        color: hsl(var(--accent-2));
+    }
+
+    h3 {
+        font-size: inherit;
+        font-weight: 700;
+    }
+
+    .at {
+        color: hsl(var(--dim));
+        font-weight: 400;
+    }
+
+    .note {
+        color: hsl(var(--dim));
+    }
+
+    .diff {
+        margin-top: 0.35rem;
+
+        li {
+            position: relative;
+            padding-left: 2ch;
+
+            &::before {
+                content: "+";
+                position: absolute;
+                left: 0;
+                color: hsl(var(--accent));
+            }
+        }
+    }
+</style>
