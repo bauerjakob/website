@@ -10,7 +10,10 @@ import image from "@astrojs/image";
 
 // https://astro.build/config
 
-export default defineConfig({});
+export default defineConfig({
+    // The GitHub Pages workflow sets BASE_PATH=/website; local builds use the root.
+    base: process.env.BASE_PATH ?? "/",
+});
 
 // Config for Github Pages
 // export default defineConfig({
