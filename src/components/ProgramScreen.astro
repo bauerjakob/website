@@ -7,7 +7,6 @@ interface Props {
 
 const { tabs } = Astro.props;
 const firstname = site.author.firstname.toLowerCase();
-const lastname = site.author.lastname.toLowerCase();
 const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
 ---
 
@@ -62,7 +61,6 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
                 type="button"
                 aria-label="Maximize window"></button>
         </div>
-        <p class="title">{firstname}@{lastname} — zsh</p>
     </header>
 
     <div id="scroller" class="scroller" tabindex="0">
@@ -102,7 +100,6 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
                 ))
             }
         </ul>
-        <span id="clock" class="clock" aria-hidden="true"></span>
     </nav>
 
     {
@@ -204,7 +201,6 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
 
         @include windowed {
             --radius: 13px;
-            container-type: inline-size;
             width: min(60rem, calc(100% - 3rem));
             height: min(48rem, calc(100vh - 5rem));
             height: min(48rem, calc(100dvh - 5rem));
@@ -338,11 +334,6 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
                 cursor: default;
             }
         }
-    }
-
-    .title {
-        font-size: 0.75rem;
-        color: hsl(var(--dim));
     }
 
     .lights {
@@ -516,10 +507,6 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
             &[aria-current] {
                 color: hsl(var(--accent));
                 font-weight: 700;
-
-                &::after {
-                    content: "*";
-                }
             }
         }
     }
@@ -542,24 +529,6 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
                 calc(100% - 7px) 100%,
                 0 100%
             );
-        }
-    }
-
-    .clock {
-        display: none;
-
-        @include windowed {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-            padding: 0 0.75rem;
-        }
-    }
-
-    // a narrow, resized window has no room for the clock
-    @container (max-width: 33rem) {
-        .clock {
-            display: none;
         }
     }
 </style>
@@ -924,21 +893,4 @@ const resizeEdges = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
         }
         promptInput.focus({ preventScroll: true });
     });
-
-    // --- status bar clock ---
-
-    const clock = byId("clock");
-    const clockFormat = new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Europe/Berlin",
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZoneName: "short",
-    });
-
-    function tick() {
-        clock.textContent = clockFormat.format(new Date());
-    }
-
-    tick();
-    setInterval(tick, 20_000);
 </script>

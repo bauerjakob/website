@@ -21,7 +21,8 @@
 body {
     font-size: 0.875rem;
     line-height: 1.6;
-    background-color: hsl(var(--base));
+    // on small screens the page is the terminal, so it matches the window
+    background-color: hsl(var(--base-darker));
     color: hsl(var(--txtc));
     font-family: "Hack", ui-monospace, Menlo, Consolas, monospace;
     -webkit-font-smoothing: antialiased;
@@ -29,11 +30,14 @@ body {
     // the terminal scrolls itself, and its resize handles may poke past the edge
     @include windowed {
         overflow: hidden;
+        background-color: hsl(var(--base));
     }
 
-    // wallpaper behind the terminal window
+    // wallpaper behind the floating terminal window
     &::before {
-        content: "";
+        @include windowed {
+            content: "";
+        }
         position: fixed;
         inset: 0;
         z-index: -1;
