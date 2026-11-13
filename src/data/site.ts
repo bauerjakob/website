@@ -74,8 +74,8 @@ export const site: Site = {
             },
             {
                 name: "linkedin",
-                label: "linkedin.com/in/jakob-bauer-83749a315",
-                link: "https://www.linkedin.com/in/jakob-bauer-83749a315",
+                label: "linkedin.com/in/bauerjakob",
+                link: "https://www.linkedin.com/in/bauerjakob/",
             },
         ],
         experience: [
